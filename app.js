@@ -5,13 +5,14 @@ const {fail,entero,registrar,anular}=require('./services/inventario');
 const helmet = require('helmet');
 const { rateLimit } = require('express-rate-limit');
 const app=express();
+app.set('trust proxy', 1);
 const authRoutes = require('./routes/authRoutes');
 const autenticar = require('./middleware/authMiddleware');
 
 app.use(helmet());
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: (process.env.CORS_ORIGIN || 'http://localhost:5173,http://127.0.0.1:5173').split(',').map(origin => origin.trim()),
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -75,7 +76,7 @@ app.use(
   autenticar(['Administrador'])
 );
 
- // LABORATORIO 10 - PROTECCIÓN DE KARDEX
+ 
 
 const protegerKardex = (req, res, next) => {
   let rolesPermitidos;

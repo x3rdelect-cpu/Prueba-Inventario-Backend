@@ -34,7 +34,7 @@ la autorización de la API.
 
 ## Estructura
 
-- `appInventario/`: frontend React.
+- El frontend React está en el repositorio independiente `SENATI-Inventario-Front/appInventario`.
 - `config/`: conexión con MySQL.
 - `models/`: modelos y asociaciones.
 - `middleware/`: autenticación y autorización.
@@ -99,7 +99,7 @@ GET http://localhost:3006/api/health
 En otra terminal:
 
 ```bash
-cd appInventario
+cd ../SENATI-Inventario-Front/appInventario
 npm ci
 npm run dev
 ```
@@ -112,6 +112,19 @@ http://127.0.0.1:5173
 
 Vite redirige las solicitudes `/api` al backend local mediante su proxy.
 El cliente utiliza `/api` como URL base si no se configura `VITE_API_URL`.
+
+## Despliegue separado
+
+Este directorio es la raíz del repositorio del backend y del servicio web en Render.
+Usa `npm ci` como comando de compilación y `npm start` como comando de inicio.
+Configura en Render `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`,
+`JWT_SECRET`, `NODE_ENV=production` y `CORS_ORIGIN` con la URL pública exacta
+del frontend en Vercel (sin barra final). Render define `PORT` automáticamente.
+La base MySQL debe ser accesible desde Render. El chequeo de salud es `/api/health`.
+
+En Vercel, selecciona `appInventario` como raíz del proyecto si subes la carpeta
+`SENATI-Inventario-Front` completa. Configura `VITE_API_URL` con
+`https://TU-SERVICIO.onrender.com/api` y vuelve a desplegar si cambia la URL.
 
 ## Acceso inicial
 
